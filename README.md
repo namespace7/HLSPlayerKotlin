@@ -7,3 +7,4 @@ The application allow users to test Hls stream, implementation of track selectio
 The application uses Exo-player library. Exo-player version used - 2.18.0
 
 minSdkVersion 21
+ screenshot - https://github.com/namespace7/HLSPlayerKotlin/issues/1#issue-1333225350
