@@ -10,4 +10,6 @@ minSdkVersion 21
  screenshot - https://github.com/namespace7/HLSPlayerKotlin/issues/1#issue-1333225350
  
  
- Reference  - https://github.com/halilozel1903/ExoPlayerDemo
+ Reference  
+ -> https://github.com/halilozel1903/ExoPlayerDemo
+ -> https://play.kotlinlang.org/byExample/01_introduction/01_Hello%20world
