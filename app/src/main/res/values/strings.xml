@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Hls player</string>
+    <string name="textfield_label">Enter URl</string>
+</resources>
