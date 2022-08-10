@@ -35,9 +35,11 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_gravity="right"
+            android:clickable="true"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_settings"
-            app:tint="#4ea8d8" />
+            app:tint="#4ea8d8"
+            android:onClick="clickEvent" />
 
     </LinearLayout>
 
