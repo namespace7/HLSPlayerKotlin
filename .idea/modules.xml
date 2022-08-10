@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Hls_player.iml" filepath="$PROJECT_DIR$/.idea/modules/Hls_player.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Hls_player.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Hls_player.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Hls_player.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Hls_player.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Hls_player.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Hls_player.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Hls_player.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Hls_player.app.unitTest.iml" />
+    </modules>
+  </component>
+</project>
