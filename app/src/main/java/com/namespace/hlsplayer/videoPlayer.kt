@@ -1,33 +1,35 @@
 package com.namespace.hlsplayer
 
+import android.R.attr.data
+import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.ui.TrackSelectionDialogBuilder
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 const val MAX_HEIGHT = 539
 const val MAX_WIDTH = 959
 
 
-class videoPlayer: AppCompatActivity(),Player.Listener {
+class videoPlayer: AppCompatActivity() {
 
     private lateinit var dialogBuilder: Dialog
     private lateinit var exoPlayer: SimpleExoPlayer
@@ -40,6 +42,7 @@ class videoPlayer: AppCompatActivity(),Player.Listener {
     private var isPlayerPlaying = true
     private  var HLS_STATIC_URL =""
     private var trackDialog: Dialog? = null
+    private lateinit var context: Context
     private lateinit var progressBar: View
 
 
@@ -59,54 +62,76 @@ class videoPlayer: AppCompatActivity(),Player.Listener {
         if (playable != null) {
             if (playable.isNotEmpty()) {
                 HLS_STATIC_URL = playable
-                 val mediaItem = MediaItem.Builder()
-                    .setUri(HLS_STATIC_URL)
-                    .setMimeType(MimeTypes.APPLICATION_M3U8)
-                    .build()
+
                 initPlayer()
-            } else {
-                HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
-                val mediaItem = MediaItem.Builder()
-                    .setUri(HLS_STATIC_URL)
-                    .setMimeType(MimeTypes.APPLICATION_M3U8)
-                    .build()
-                Toast.makeText(this, "Address is empty or not Valid! Playing a pre-defined Url", Toast.LENGTH_SHORT).show()
-                initPlayer()
+                exoPlayer.prepare()
+                addPlayerListeners()
             }
         }
 
-        //defining player view
-        playerView = findViewById(R.id.playerView)
-        exoQuality = playerView.findViewById(R.id.change_quality)
-        dataSourceFactory = DefaultDataSourceFactory(this, Util.getUserAgent(this, "Hls Player"))
+        //track selection onclick
+
         exoQuality.setOnClickListener{
             if(trackDialog == null){
                 initPopupQuality()
             }
             trackDialog?.show()
         }
+
     }
+
+
+////// HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
     //Listener on player
-    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        when(playbackState){
-            Player.STATE_BUFFERING ->{
-                progressBar.visibility =View.VISIBLE
+    private fun addPlayerListeners() {
+        exoPlayer.addListener(object : Player.Listener{
+            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                super.onMediaItemTransition(mediaItem, reason)
+
             }
-            Player.STATE_READY -> {
-                progressBar.visibility = View.GONE
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                when(playbackState){
+                    Player.STATE_BUFFERING ->{
+                        progressBar.visibility =View.VISIBLE
+                    }
+                    Player.STATE_READY -> {
+                        progressBar.visibility = View.GONE
+                    }
+                    Player.EVENT_PLAYBACK_STATE_CHANGED->{
+
+                    }
+                }
+                playerView.keepScreenOn = !(playbackState == Player.STATE_IDLE || playbackState == Player.STATE_ENDED ||
+                        !playWhenReady)
             }
-            Player.EVENT_PLAYER_ERROR ->{
-                Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+            override fun onPlayerError(error: ExoPlaybackException) {
+                super.onPlayerError(error)
+
+                Toast.makeText(
+                    applicationContext, "Error ! Please verify URL" as String?,
+                    Toast.LENGTH_LONG
+                ).show()
+                releasePlayer()
+
+
             }
-        }
+
+
+        })
+    exoPlayer.playWhenReady = true; //run file/link when ready to play.
     }
-
-
 
 
     private fun initPlayer(){
-        progressBar = findViewById(R.id.loading)
+        //defining player view
         playerView = findViewById(R.id.playerView)
+        exoQuality = playerView.findViewById(R.id.change_quality)
+
+        progressBar = findViewById(R.id.loading)
+        playerView.useController = true;//set to true or false to see controllers
+        playerView.requestFocus()
+        dataSourceFactory = DefaultDataSourceFactory(this, Util.getUserAgent(this, "Hls Player"))
+
         val mediaItem = MediaItem.Builder()
             .setUri(HLS_STATIC_URL)
             .setMimeType(MimeTypes.APPLICATION_M3U8)
@@ -120,7 +145,7 @@ class videoPlayer: AppCompatActivity(),Player.Listener {
             setMediaItem(mediaItem)
             prepare()
         }
-        playerView.player = exoPlayer
+       playerView.player = exoPlayer
     }
 
     private fun releasePlayer(){
