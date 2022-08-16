@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
+import com.namespace.hlsplayer.databinding.VideoswitchBinding
 
 
 const val MAX_HEIGHT = 539
@@ -40,11 +41,13 @@ class videoPlayer: AppCompatActivity() {
     private  var HLS_STATIC_URL =""
     private var trackDialog: Dialog? = null
     private lateinit var progressBar: ProgressBar
-
+    private lateinit var binding: VideoswitchBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.videoswitch)
+
+        binding  = VideoswitchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         //retrieve url data from previous class
         val playable = intent.getStringExtra("Playable")
         Log.d("____TTT_________T___ ",(playable.toString()))
@@ -140,12 +143,13 @@ class videoPlayer: AppCompatActivity() {
     private fun initPlayer(){
 
         //defining player view
+
         playerView = findViewById(R.id.playerView)
         exoQuality = playerView.findViewById(R.id.change_quality)
 
         progressBar =  findViewById(R.id.circularProgressBar)
 
-        playerView.useController = true//set to true or false to see controllers
+        binding.playerView.useController = true//set to true or false to see controllers
         playerView.requestFocus()
         dataSourceFactory = DefaultDataSourceFactory(this, Util.getUserAgent(this, "Hls Player"))
 

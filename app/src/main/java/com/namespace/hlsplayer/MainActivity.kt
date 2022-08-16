@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.namespace.hlsplayer.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity()  {
@@ -24,13 +25,12 @@ class MainActivity : AppCompatActivity()  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val playButton = findViewById<Button>(R.id.playButton)
-        val demoButton = findViewById<Button>(R.id.demoButton)
-        val editText = findViewById<EditText>(R.id.url_field)
-        playButton.setOnClickListener {
+        var binding: ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.playButton.setOnClickListener {
             // Getting the user input
-            val text = editText.text.toString()
+            val text = binding.urlField.text.toString()
             if (text != null && text.isNotEmpty()) {
                 var intent = Intent(applicationContext,videoPlayer::class.java)
                 intent.putExtra("Playable",text)
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity()  {
                 }
             }
         }
-        demoButton.setOnClickListener {
+        binding.demoButton.setOnClickListener {
             var HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
             var intent = Intent(applicationContext,videoPlayer::class.java)
             intent.putExtra("Playable",HLS_STATIC_URL)
