@@ -20,6 +20,7 @@ import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
+import com.google.android.material.snackbar.Snackbar
 
 
 const val MAX_HEIGHT = 539
@@ -137,7 +138,6 @@ class videoPlayer: AppCompatActivity() {
 
 
     private fun initPlayer(){
-
 
         //defining player view
         playerView = findViewById(R.id.playerView)
