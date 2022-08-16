@@ -1,6 +1,8 @@
 package com.namespace.hlsplayer
 
+import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +10,6 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -107,10 +108,26 @@ class videoPlayer: AppCompatActivity() {
             override fun onPlayerError(error: ExoPlaybackException) {
                 super.onPlayerError(error)
 
-                Toast.makeText(
-                    applicationContext, "Error ! Please verify URL" as String?,
-                    Toast.LENGTH_LONG
-                ).show()
+                val builder = AlertDialog.Builder(this@videoPlayer)
+                //set title for alert dialog
+                builder.setTitle("Alert")
+                //set message for alert dialog
+                builder.setMessage("Player Error ! " + error.sourceException.message )
+                builder.setIcon(android.R.drawable.ic_dialog_alert)
+
+                //performing positive action
+                builder.setPositiveButton("OK")
+                { _, _ ->
+                    var intent = Intent(applicationContext,MainActivity::class.java)
+                    startActivity(intent)
+                }
+
+                // Create the AlertDialog
+                val alertDialog: AlertDialog = builder.create()
+                // Set other dialog properties
+                alertDialog.setCancelable(false)
+                alertDialog.show()
+
                 releasePlayer()
             }
         })
@@ -156,10 +173,7 @@ class videoPlayer: AppCompatActivity() {
         exoPlayer.release()
     }
     //Android life cycle
-    override fun onStart() {
-        super.onStart()
 
-    }
 
     override fun onResume() {
         super.onResume()
