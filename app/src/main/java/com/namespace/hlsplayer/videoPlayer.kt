@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -20,7 +19,6 @@ import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
-import com.google.android.material.snackbar.Snackbar
 import com.namespace.hlsplayer.databinding.VideoswitchBinding
 
 
@@ -40,7 +38,6 @@ class videoPlayer: AppCompatActivity() {
     private var isPlayerPlaying = true
     private  var HLS_STATIC_URL =""
     private var trackDialog: Dialog? = null
-    private lateinit var progressBar: ProgressBar
     private lateinit var binding: VideoswitchBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +48,6 @@ class videoPlayer: AppCompatActivity() {
         //retrieve url data from previous class
         val playable = intent.getStringExtra("Playable")
         Log.d("____TTT_________T___ ",(playable.toString()))
-      //  progressBar =  findViewById(R.id.circularProgressBar)
         //#setting screen to full
 
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN) //will hide the status bar
@@ -80,7 +76,6 @@ class videoPlayer: AppCompatActivity() {
     }
 
 
-////// HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
     //Listener on player
     private fun addPlayerListeners() {
         exoPlayer.addListener(object : Player.Listener{
@@ -88,11 +83,11 @@ class videoPlayer: AppCompatActivity() {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 when(playbackState){
                     Player.STATE_BUFFERING ->{
-                        progressBar.visibility =View.VISIBLE
+                        binding.circularProgressBar.visibility =View.VISIBLE
 
                     }
                     Player.STATE_READY -> {
-                        progressBar.visibility = View.GONE
+                        binding.circularProgressBar.visibility = View.GONE
                     }
                     Player.STATE_ENDED ->
                     {
@@ -105,7 +100,7 @@ class videoPlayer: AppCompatActivity() {
                     }
 
                 }
-                playerView.keepScreenOn = playWhenReady
+                binding.playerView.keepScreenOn = playWhenReady
             }
 
 
@@ -122,7 +117,7 @@ class videoPlayer: AppCompatActivity() {
                 //performing positive action
                 builder.setPositiveButton("OK")
                 { _, _ ->
-                    var intent = Intent(applicationContext,MainActivity::class.java)
+                    val intent = Intent(applicationContext,MainActivity::class.java)
                     startActivity(intent)
                 }
 
@@ -144,13 +139,9 @@ class videoPlayer: AppCompatActivity() {
 
         //defining player view
 
-        playerView = findViewById(R.id.playerView)
-        exoQuality = playerView.findViewById(R.id.change_quality)
-
-        progressBar =  findViewById(R.id.circularProgressBar)
-
+        exoQuality = binding.playerView.findViewById(R.id.change_quality)
         binding.playerView.useController = true//set to true or false to see controllers
-        playerView.requestFocus()
+        binding.playerView.requestFocus()
         dataSourceFactory = DefaultDataSourceFactory(this, Util.getUserAgent(this, "Hls Player"))
 
         val mediaItem = MediaItem.Builder()
@@ -166,7 +157,7 @@ class videoPlayer: AppCompatActivity() {
             setMediaItem(mediaItem)
             prepare()
         }
-       playerView.player = exoPlayer
+       binding.playerView.player = exoPlayer
     }
 
     private fun releasePlayer(){
@@ -199,7 +190,7 @@ exoPlayer.playWhenReady = true
         super.onStop()
         releasePlayer()
         if (Util.SDK_INT > 23) {
-            playerView.onPause()
+            binding.playerView.onPause()
             releasePlayer()
         }
     }
