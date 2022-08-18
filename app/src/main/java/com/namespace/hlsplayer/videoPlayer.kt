@@ -91,12 +91,12 @@ class videoPlayer: AppCompatActivity() {
                     }
                     Player.STATE_ENDED ->
                     {
-                        playerView.keepScreenOn = false
+                        binding.playerView.keepScreenOn = false
 
                     }
                     Player.STATE_IDLE ->
                     {
-                        playerView.keepScreenOn = false
+                        binding.playerView.keepScreenOn = false
                     }
 
                 }
@@ -181,7 +181,7 @@ exoPlayer.playWhenReady = true
         exoPlayer.playWhenReady =false
         releasePlayer()
         if (Util.SDK_INT <= 23) {
-            playerView.onPause()
+            binding.playerView.onPause()
             releasePlayer()
         }
     }
