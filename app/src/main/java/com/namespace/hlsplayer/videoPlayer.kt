@@ -125,7 +125,7 @@ class videoPlayer: AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
             && packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)) {
             videoPosition = exoPlayer.currentPosition
-            binding.playerView.useController = false
+            binding.playerView.useController = true
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val params = PictureInPictureParams.Builder()
                 this.enterPictureInPictureMode(params.build())
