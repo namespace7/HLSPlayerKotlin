@@ -25,7 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".videoPlayer"></activity>
+        <activity
+            android:resizeableActivity="true"
+            android:supportsPictureInPicture="true"
+            android:configChanges=
+                "screenSize|smallestScreenSize|screenLayout|orientation"
+            android:name=".videoPlayer">
+        </activity>
     </application>
 
 </manifest>
