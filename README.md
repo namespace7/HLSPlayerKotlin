@@ -2,7 +2,7 @@
 
 The application is Hard coded in Kotlin.
 
-The application allow users to test Hls stream, implementation of track selection allows user to select video qulaity manually
+The application allows user to test Hls stream, implementation of track selection allows user to select video quality  manually
 basically redo of [Hls Player link](https://github.com/namespace7/HLS_Player)
 The application uses Exo-player library. Exo-player version used - 2.14.0
 
